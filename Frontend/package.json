@@ -10,7 +10,6 @@
     "format": "prettier --write .",
     "analyze": "ANALYZE=true next build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install",
     "check-types": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
