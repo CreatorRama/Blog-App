@@ -34,8 +34,10 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     const { data } = await api.post('/auth/register', { name, email, password })
+    console.log(data)
     Cookies.set('token', data.data.token)
     setUser(data.data)
+    return data
   }
 
   const logout = () => {

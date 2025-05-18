@@ -17,13 +17,13 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+   
     try {
       await register(name, email, password)
       toast.success('Registered successfully!')
       router.push('/blogs')
     } catch (error) {
-      toast.error('Registration failed')
+      toast.error(error.response.data.message)
     } finally {
       setIsSubmitting(false)
     }
