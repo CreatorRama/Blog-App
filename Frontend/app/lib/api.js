@@ -7,8 +7,7 @@ const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
-  },
-   withCredentials: true 
+  }
 })
 
 // Add auth token to requests
@@ -24,13 +23,13 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Handle unauthorized access
-      Cookies.remove('token')
-      window.location.href = '/auth/login'
+    if (error.response?.status === 401) {
+      // Handle unauthorized (token expired, invalid, etc.)
+      localStorage.removeItem('token'); // Or your preferred storage
+      window.location.href = '/auth/login';
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
 export default api
