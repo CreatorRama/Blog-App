@@ -7,7 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 const app = express();
-
+app.options('*', cors());
 // Middleware
 app.use(cors({
   origin: [
