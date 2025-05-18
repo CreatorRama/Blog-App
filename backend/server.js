@@ -9,11 +9,16 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors(
-  {
-    origin:['http://localhost:5173','https://blog-app-fawn-delta.vercel.app/']
-  }
-));
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://blog-app-fawn-delta.vercel.app/',
+    'https://blog-app-fawn-delta.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 
 // DB Connection
