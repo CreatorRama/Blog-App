@@ -33,16 +33,16 @@ export default function BlogEditor({
 
   // Auto-save after inactivity
   useEffect(() => {
-    if (!hasChanges) return
-    
-    const timer = setTimeout(() => {
-      if (hasChanges) {
-        handleSave('draft')
-      }
-    }, 30000) // 30 seconds
-    
-    return () => clearTimeout(timer)
-  }, [hasChanges, debouncedTitle, debouncedContent, debouncedTags])
+  if (!hasChanges) return
+  
+  const timer = setTimeout(() => {
+    if (hasChanges) {
+      handleSave('draft')
+    }
+  }, 30000)
+  
+  return () => clearTimeout(timer)
+}, [hasChanges, handleSave])
 
   // Check for changes
   useEffect(() => {
@@ -53,34 +53,35 @@ export default function BlogEditor({
     setHasChanges(changes)
   }, [title, content, tags, status])
 
-  const handleSave = async (saveStatus) => {
-    if (!hasChanges && saveStatus === status) return
+  const handleSave = useCallback(async (saveStatus) => {
+  if (!hasChanges && saveStatus === status) return
+  
+  setIsSaving(true)
+  try {
+    const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag)
     
-    setIsSaving(true)
-    try {
-      const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag)
-      
-      await onSave({
-        title,
-        content,
-        tags: tagArray,
-        status: saveStatus
-      })
-      
-      initialValues.current = { title, content, tags, status: saveStatus }
-      setStatus(saveStatus)
-      setHasChanges(false)
-      
-      toast.success(saveStatus === 'published' 
-        ? 'Blog published successfully!' 
-        : 'Draft saved successfully!')
-    } catch (error) {
-      toast.error('Failed to save blog')
-      console.error(error)
-    } finally {
-      setIsSaving(false)
-    }
+    await onSave({
+      title,
+      content,
+      tags: tagArray,
+      status: saveStatus
+    })
+    
+    initialValues.current = { title, content, tags, status: saveStatus }
+    setStatus(saveStatus)
+    setHasChanges(false)
+    
+    toast.success(saveStatus === 'published' 
+      ? 'Blog published successfully!' 
+      : 'Draft saved successfully!')
+  } catch (error) {
+    toast.error('Failed to save blog')
+    console.error(error)
+  } finally {
+    setIsSaving(false)
   }
+}, [hasChanges, status, tags, title, content, onSave])
+
 
   const handlePublish = () => {
     handleSave('published')
