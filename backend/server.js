@@ -13,6 +13,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://blog-app-fawn-delta.vercel.app',
+    'https://blog-bs7z3rotj-creatorramas-projects.vercel.app/',
     'https://blog-app-fawn-delta.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
